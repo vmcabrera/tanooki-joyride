@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://ch2j6p7gw6gko"]
+
+[ext_resource type="Texture2D" uid="uid://cnrehfu2fnuy8" path="res://Assets/Sprites/background.png" id="1_4gxt3"]
+[ext_resource type="Script" uid="uid://cp5omyd107dti" path="res://Src/Main.cs" id="1_hk4rc"]
+[ext_resource type="PackedScene" uid="uid://hepck12oussr" path="res://Src/HudScene/Hud.tscn" id="3_4m1ep"]
+
+[node name="Main" type="Node"]
+script = ExtResource("1_hk4rc")
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2(1499, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+texture = ExtResource("1_4gxt3")
+centered = false
+
+[node name="Hud" parent="." instance=ExtResource("3_4m1ep")]

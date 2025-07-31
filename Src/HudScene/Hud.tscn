@@ -1,0 +1,66 @@
+[gd_scene load_steps=3 format=3 uid="uid://hepck12oussr"]
+
+[ext_resource type="Script" uid="uid://c2ia4vt61if6l" path="res://Src/HudScene/Hud.cs" id="1_0s2yd"]
+[ext_resource type="FontFile" uid="uid://rjwp4se5td2j" path="res://Assets/Fonts/Pusia Bold.otf" id="1_e76up"]
+
+[node name="Hud" type="CanvasLayer"]
+script = ExtResource("1_0s2yd")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 92.0
+grow_horizontal = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_right = 10
+
+[node name="TopContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="DistanceContainer" type="VBoxContainer" parent="MarginContainer/TopContainer"]
+layout_mode = 2
+theme_override_constants/separation = -4
+
+[node name="CurrentDistanceLabel" type="Label" parent="MarginContainer/TopContainer/DistanceContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("1_e76up")
+theme_override_font_sizes/font_size = 30
+text = "0M"
+
+[node name="BestDistanceLabel" type="Label" parent="MarginContainer/TopContainer/DistanceContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("1_e76up")
+theme_override_font_sizes/font_size = 22
+text = "BEST: 0M"
+
+[node name="CoinsContainer" type="HBoxContainer" parent="MarginContainer/TopContainer/DistanceContainer"]
+layout_mode = 2
+
+[node name="CurrentCoinsLabel" type="Label" parent="MarginContainer/TopContainer/DistanceContainer/CoinsContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("1_e76up")
+theme_override_font_sizes/font_size = 22
+text = "0$"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ExpandContainer" type="Control" parent="MarginContainer/TopContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ButtonContainer" type="VBoxContainer" parent="MarginContainer/TopContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="ResetButton" type="Button" parent="MarginContainer/TopContainer/ButtonContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Reset"
