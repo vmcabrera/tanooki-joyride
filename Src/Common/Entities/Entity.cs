@@ -1,6 +1,6 @@
-using Godot;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Godot;
 
 namespace TanookiJoyride.Src.Common.Entities;
 
@@ -25,7 +25,7 @@ public partial class Entity : Node2D
 
     public T GetComponent<T>()
     {
-        if (_components.TryGetValue(typeof(T), out var value))
+        if (_components.TryGetValue(typeof(T), out object value))
         {
             return (T)value;
         }
