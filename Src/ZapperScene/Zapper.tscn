@@ -1,0 +1,34 @@
+[gd_scene load_steps=6 format=3 uid="uid://dq4wcra0c446b"]
+
+[ext_resource type="Script" uid="uid://bwqjvsbxe5lpq" path="res://Src/ZapperScene/Zapper.cs" id="1_towgu"]
+[ext_resource type="Texture2D" uid="uid://bigedru5px0lr" path="res://Assets/Sprites/zapper1.png" id="2_3libf"]
+[ext_resource type="Texture2D" uid="uid://dull4edevaubb" path="res://Assets/Sprites/zapper2.png" id="3_0fo5l"]
+[ext_resource type="Texture2D" uid="uid://ddswg3gubeuv" path="res://Assets/Sprites/zapper3.png" id="4_er8re"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3libf"]
+
+[node name="Zapper" type="Area2D"]
+scale = Vector2(0.3, 0.3)
+script = ExtResource("1_towgu")
+metadata/_edit_lock_ = true
+
+[node name="LeftSprite2D" type="Sprite2D" parent="."]
+position = Vector2(-156.334, 0)
+texture = ExtResource("2_3libf")
+
+[node name="MiddleSprite2D" type="Sprite2D" parent="."]
+texture_repeat = 2
+texture = ExtResource("3_0fo5l")
+region_enabled = true
+region_rect = Rect2(0, 0, 92, 64)
+
+[node name="RightSprite2D" type="Sprite2D" parent="."]
+position = Vector2(154.334, 0)
+texture = ExtResource("4_er8re")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_3libf")
+
+[connection signal="body_entered" from="." to="." method="OnBodyEntered"]
