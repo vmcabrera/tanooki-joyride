@@ -11,6 +11,9 @@ public partial class Zapper : Entity
     private Sprite2D _middleSprite;
     private Sprite2D _rightSprite;
 
+    private const int MinPositionHeight = 225;
+    private const int MaxPositionHeight = 400;
+
     private const int MinLengthMultiplier = 3;
     private const int MaxLengthMultiplier = 6;
 
@@ -30,7 +33,7 @@ public partial class Zapper : Entity
         ScrollingComponent scrollingComponent = AddComponent<ScrollingComponent>(new ScrollingComponent());
         AddChild(scrollingComponent);
 
-        scrollingComponent.SetStartPositionOffset(new Vector2(0, RandomUtility.RandRange(225, 400)));
+        scrollingComponent.SetStartPositionOffset(new Vector2(0, RandomUtility.RandRange(MinPositionHeight, MaxPositionHeight)));
         scrollingComponent.OnScreenExited += OnRemoveEntity;
 
         SetScrollingRotation(scrollingComponent);
