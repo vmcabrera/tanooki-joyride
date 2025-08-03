@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Godot;
+using TanookiJoyride.Src.CoinScene;
 
 namespace TanookiJoyride.Src.Common.Entities;
 
@@ -38,9 +39,18 @@ public partial class EntityManager : Node
     {
         switch (entity)
         {
+            case CoinGroup coinGroup:
+                coinGroup.OnEntityCollected += (Coin coin) => AddCollectedCoin(coin);
+                break;
             default:
+                GD.PrintErr($"Unhandled collectible entity type: {entity}");
                 break;
         }
+    }
+
+    private void AddCollectedCoin(Coin coin)
+    {
+        GetParent<Main>().AddCollectedCoins(coin.Value);
     }
 
     public void ClearEntities()

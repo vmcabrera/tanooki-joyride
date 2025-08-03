@@ -1,4 +1,4 @@
-using Godot;
+﻿using Godot;
 using TanookiJoyride.Src.Common.Entities;
 using TanookiJoyride.Src.HudScene;
 
@@ -40,6 +40,12 @@ public partial class Main : Node
         _background.ScrollOffset = new Vector2(_background.ScrollOffset.X - (ScrollingSpeed * (float)delta), 0);
 
         UpdateCurrentDistance(delta);
+    }
+
+    public void AddCollectedCoins(int amount)
+    {
+        _currentCoins += amount;
+        _hud.UpdateCurrentCoins(_currentCoins);
     }
 
     private void UpdateCurrentDistance(double delta)
