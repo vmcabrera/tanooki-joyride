@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Godot;
 
@@ -13,7 +13,7 @@ public partial class EntityManager : Node
         _entities.Add(entity);
         AddChild(entity);
 
-        entity.Connect("OnRemove", new Callable(this, MethodName.RemoveEntity));
+        ConnectCustomSignals(entity);
     }
 
     public override void _Process(double delta)
@@ -25,6 +25,22 @@ public partial class EntityManager : Node
                 entity.GetComponent<ScrollingComponent>().UpdateScrollingPosition(delta);
             }
         });
+    }
+
+    private void ConnectCustomSignals(Entity entity)
+    {
+        entity.OnRemove += (Entity entity) => RemoveEntity(entity);
+
+        if (entity.IsCollectible) HandleEntityCollectedSignal(entity);
+    }
+
+    private void HandleEntityCollectedSignal(Entity entity)
+    {
+        switch (entity)
+        {
+            default:
+                break;
+        }
     }
 
     public void ClearEntities()
