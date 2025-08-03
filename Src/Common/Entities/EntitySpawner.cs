@@ -1,6 +1,7 @@
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Godot;
+using TanookiJoyride.Src.Common.Components;
+using TanookiJoyride.Src.Common.Utils;
 
 namespace TanookiJoyride.Src.Common.Entities;
 
@@ -22,7 +23,8 @@ public partial class EntitySpawner(EntityManager entityManager) : Node
     public void InitSpawnTimer()
     {
         _spawnTimer.WaitTime = StartingWaitTime;
-        _spawnTimer.OneShot = false;
+        _spawnTimer.OneShot = true;
+        _spawnTimer.Autostart = false;
         _spawnTimer.Timeout += OnSpawnTimeout;
 
         AddChild(_spawnTimer);
@@ -31,24 +33,36 @@ public partial class EntitySpawner(EntityManager entityManager) : Node
 
     private void OnSpawnTimeout()
     {
-        if (_randomizedEntitiesScenePaths != null && _randomizedEntitiesScenePaths.Any())
+        _spawnTimer.Stop();
+
+        float entityDelay = 0f;
+
+        if (_randomizedEntitiesScenePaths != null && _randomizedEntitiesScenePaths.Count != 0)
         {
-            SpawnRandomEntity();
+            Entity entity = SpawnRandomEntity();
+
+            if (entity.HasComponent<SpawnCooldownComponent>())
+            {
+                entityDelay = entity.GetComponent<SpawnCooldownComponent>().Time;
+            }
         }
 
-        RandomizeSpawnTimer();
+        RandomizeSpawnTimer(entityDelay);
+        _spawnTimer.Start();
     }
 
-    private void SpawnRandomEntity()
+    private Entity SpawnRandomEntity()
     {
-        string randomScenePath = _randomizedEntitiesScenePaths[GD.RandRange(0, _randomizedEntitiesScenePaths.Count - 1)];
+        string randomScenePath = _randomizedEntitiesScenePaths[RandomUtility.RandRange(0, _randomizedEntitiesScenePaths.Count - 1)];
 
         Entity entity = (Entity)ResourceLoader.Load<PackedScene>(randomScenePath).Instantiate();
         _entityManager.AddEntity(entity);
+
+        return entity;
     }
 
-    private void RandomizeSpawnTimer()
+    private void RandomizeSpawnTimer(float delay)
     {
-        _spawnTimer.WaitTime = _randomWaitTimeArray[GD.RandRange(0, _randomWaitTimeArray.Length - 1)];
+        _spawnTimer.WaitTime = _randomWaitTimeArray[RandomUtility.RandRange(0, _randomWaitTimeArray.Length - 1)] + delay;
     }
 }
