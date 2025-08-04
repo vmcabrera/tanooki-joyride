@@ -1,7 +1,9 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using Godot;
 using TanookiJoyride.Src.CoinScene;
+using TanookiJoyride.Src.Common.Components;
 
 namespace TanookiJoyride.Src.Common.Entities;
 
@@ -32,7 +34,7 @@ public partial class EntityManager : Node
     {
         entity.OnRemove += (Entity entity) => RemoveEntity(entity);
 
-        if (entity.IsCollectible) HandleEntityCollectedSignal(entity);
+        if (entity.HasComponent<CollectibleComponent>()) HandleEntityCollectedSignal(entity);
     }
 
     private void HandleEntityCollectedSignal(Entity entity)

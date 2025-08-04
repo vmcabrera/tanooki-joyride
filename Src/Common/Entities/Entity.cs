@@ -9,7 +9,6 @@ public partial class Entity : Node2D
     [Signal]
     public delegate void OnRemoveEventHandler(Entity entity);
 
-    public bool IsCollectible { get; protected set; } = false;
     private readonly Dictionary<Type, object> _components = [];
 
     public T AddComponent<T>(T component)

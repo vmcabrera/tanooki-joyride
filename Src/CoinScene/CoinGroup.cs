@@ -36,7 +36,7 @@ public partial class CoinGroup : Entity
         scrollingComponent.SetStartPositionOffset(new Vector2(0, RandomUtility.RandRange(MinPositionHeight, MaxPositionHeight)));
         scrollingComponent.OnScreenExited += OnRemoveEntity;
 
-        IsCollectible = true;
+        AddComponent<CollectibleComponent>(new CollectibleComponent(this));
 
         CreateRandomPattern();
     }
@@ -116,7 +116,7 @@ public partial class CoinGroup : Entity
                 coin.Position = patternOffset(i, j);
 
                 AddChild(coin);
-                coin.OnPlayerEntered += (Coin coin) => OnCoinCollected(coin);
+                coin.GetComponent<CollectibleComponent>().OnEntityCollected += (Entity coin) => OnCoinCollected((Coin)coin);
 
                 Rect2 coinRect = coin.GetNode<CollisionShape2D>("CollisionShape2D").Shape.GetRect();
                 coinRect.Position = coin.ToGlobal(coinRect.Position);

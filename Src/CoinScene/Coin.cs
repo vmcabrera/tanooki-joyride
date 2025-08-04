@@ -1,20 +1,24 @@
 ﻿using Godot;
+using TanookiJoyride.Src.Common.Components;
+using TanookiJoyride.Src.Common.Entities;
 using TanookiJoyride.Src.PlayerScene;
 
 namespace TanookiJoyride.Src.CoinScene;
 
-public partial class Coin : Area2D
+public partial class Coin : Entity
 {
-    [Signal]
-    public delegate void OnPlayerEnteredEventHandler(Coin coin);
-
     public int Value { get; } = 1;
+
+    public override void _Ready()
+    {
+        AddComponent<CollectibleComponent>(new CollectibleComponent(this));
+    }
 
     private void OnBodyEntered(Node2D body)
     {
         if (body.GetType() == typeof(Player))
         {
-            EmitSignal(SignalName.OnPlayerEntered, this);
+            GetComponent<CollectibleComponent>().EmitOnEntityCollected();
         }
 
         QueueFree();
