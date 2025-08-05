@@ -1,7 +1,9 @@
 ﻿using Godot;
 using TanookiJoyride.Src.Common;
+using TanookiJoyride.Src.Common.Components;
 using TanookiJoyride.Src.Common.Entities;
 using TanookiJoyride.Src.Common.Utils;
+using TanookiJoyride.Src.PlayerScene;
 
 namespace TanookiJoyride.Src.ZapperScene;
 
@@ -10,6 +12,8 @@ public partial class Zapper : Entity
     private Sprite2D _leftSprite;
     private Sprite2D _middleSprite;
     private Sprite2D _rightSprite;
+
+    private const int CollisionDamage = 1;
 
     private const int MinPositionHeight = 225;
     private const int MaxPositionHeight = 400;
@@ -30,6 +34,14 @@ public partial class Zapper : Entity
         _middleSprite = GetNode<Sprite2D>("MiddleSprite2D");
         _rightSprite = GetNode<Sprite2D>("RightSprite2D");
 
+        AddScrollingComponent();
+        AddObstacleComponent();
+
+        RandomizeLength();
+    }
+
+    private void AddScrollingComponent()
+    {
         ScrollingComponent scrollingComponent = AddComponent<ScrollingComponent>(new ScrollingComponent());
         AddChild(scrollingComponent);
 
@@ -37,7 +49,14 @@ public partial class Zapper : Entity
         scrollingComponent.OnScreenExited += OnRemoveEntity;
 
         SetScrollingRotation(scrollingComponent);
-        RandomizeLength();
+    }
+
+    private void AddObstacleComponent()
+    {
+        ObstacleComponent obstacleComponent = AddComponent<ObstacleComponent>(new ObstacleComponent());
+        AddChild(obstacleComponent);
+
+        obstacleComponent.CollisionDamage = CollisionDamage;
     }
 
     private void SetScrollingRotation(ScrollingComponent scrollingComponent)
@@ -79,5 +98,13 @@ public partial class Zapper : Entity
 
         RectangleShape2D shape = (RectangleShape2D)GetNode<CollisionShape2D>("CollisionShape2D").Shape;
         shape.Size = new Vector2(spriteRect.Size.X, spriteRect.Size.Y);
+    }
+
+    private void OnBodyEntered(Node2D body)
+    {
+        if (body.GetType() == typeof(Player))
+        {
+            GetComponent<ObstacleComponent>().EmitObstacleCollision();
+        }
     }
 }

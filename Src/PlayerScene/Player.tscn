@@ -1,0 +1,89 @@
+[gd_scene load_steps=10 format=3 uid="uid://d33scd7hgs8x7"]
+
+[ext_resource type="Script" uid="uid://dlvgix2d1sxml" path="res://Src/PlayerScene/Player.cs" id="1_s2040"]
+[ext_resource type="Texture2D" uid="uid://csaa51nmb8g2d" path="res://Assets/Sprites/tanooki_dead1.png" id="2_btdsc"]
+[ext_resource type="Texture2D" uid="uid://yx5hbomrm5pv" path="res://Assets/Sprites/tanooki_fly1.png" id="2_sif4g"]
+[ext_resource type="Texture2D" uid="uid://btumk4w7wftqe" path="res://Assets/Sprites/tanooki_fall.png" id="2_u00t6"]
+[ext_resource type="Texture2D" uid="uid://bghpekan2jnb0" path="res://Assets/Sprites/tanooki_fly2.png" id="3_u00t6"]
+[ext_resource type="Texture2D" uid="uid://c25blk51srfmo" path="res://Assets/Sprites/tanooki_walk1.png" id="4_btdsc"]
+[ext_resource type="Texture2D" uid="uid://htfpftpbk1on" path="res://Assets/Sprites/tanooki_walk2.png" id="5_sif4g"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_s2040"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_btdsc")
+}],
+"loop": true,
+"name": &"dead",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_btdsc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_btdsc")
+}],
+"loop": true,
+"name": &"dying",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_u00t6")
+}],
+"loop": true,
+"name": &"falling",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_sif4g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_u00t6")
+}],
+"loop": true,
+"name": &"flying",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_btdsc")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_btdsc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_sif4g")
+}],
+"loop": true,
+"name": &"walking",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vogx5"]
+radius = 159.665
+height = 360.696
+
+[node name="Player" type="CharacterBody2D"]
+z_index = 1
+scale = Vector2(0.2, 0.2)
+script = ExtResource("1_s2040")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_s2040")
+animation = &"dead"
+autoplay = "idle"
+frame_progress = 0.109886
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(30, -15)
+rotation = -0.698132
+shape = SubResource("CapsuleShape2D_vogx5")
