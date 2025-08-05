@@ -14,6 +14,7 @@ public partial class EntitySpawner(EntityManager entityManager) : Node
     private readonly float[] _randomWaitTimeArray = [1.5f, 2.5f, 3f];
 
     private const float StartingWaitTime = 3.0f;
+    private const float BulletSpawnChance = 0.5f;
 
     public override void _Ready()
     {
@@ -26,9 +27,17 @@ public partial class EntitySpawner(EntityManager entityManager) : Node
         _spawnTimer.OneShot = true;
         _spawnTimer.Autostart = false;
         _spawnTimer.Timeout += OnSpawnTimeout;
-
         AddChild(_spawnTimer);
+    }
+
+    public void StartSpawnTimer()
+    {
         _spawnTimer.Start();
+    }
+
+    public void StopSpawnTimer()
+    {
+        _spawnTimer.Stop();
     }
 
     private void OnSpawnTimeout()
@@ -53,12 +62,20 @@ public partial class EntitySpawner(EntityManager entityManager) : Node
 
     private Entity SpawnRandomEntity()
     {
+        if (RandomUtility.Randf() < BulletSpawnChance) SpawnBullet();
+
         string randomScenePath = _randomizedEntitiesScenePaths[RandomUtility.RandRange(0, _randomizedEntitiesScenePaths.Count - 1)];
 
         Entity entity = (Entity)ResourceLoader.Load<PackedScene>(randomScenePath).Instantiate();
         _entityManager.AddEntity(entity);
 
         return entity;
+    }
+
+    private void SpawnBullet()
+    {
+        Entity entity = (Entity)ResourceLoader.Load<PackedScene>("res://Src/BulletScene/Bullet.tscn").Instantiate();
+        _entityManager.AddEntity(entity);
     }
 
     private void RandomizeSpawnTimer(float delay)
