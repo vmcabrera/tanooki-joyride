@@ -8,6 +8,7 @@ public partial class ScrollingComponent : Node
     [Signal]
     public delegate void OnScreenExitedEventHandler();
 
+    public bool HasMotion { get; set; } = false;
     public float Speed { get; set; } = 300f;
     public Vector2 StartPosition { get; set; }
     public int RotationDegrees { get; set; }

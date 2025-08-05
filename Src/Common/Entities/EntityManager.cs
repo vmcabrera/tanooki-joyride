@@ -4,11 +4,14 @@ using System.Collections.Generic;
 using Godot;
 using TanookiJoyride.Src.CoinScene;
 using TanookiJoyride.Src.Common.Components;
+using TanookiJoyride.Src.PlayerScene;
 
 namespace TanookiJoyride.Src.Common.Entities;
 
 public partial class EntityManager : Node
 {
+    public bool UpdateMotionless { get; set; } = true;
+
     private readonly List<Entity> _entities = [];
 
     public void AddEntity(Entity entity)
@@ -25,9 +28,19 @@ public partial class EntityManager : Node
         {
             if (entity.HasComponent<ScrollingComponent>())
             {
-                entity.GetComponent<ScrollingComponent>().UpdateScrollingPosition(delta);
+                ScrollingComponent sc = entity.GetComponent<ScrollingComponent>();
+
+                if (UpdateMotionless || sc.HasMotion)
+                {
+                    entity.GetComponent<ScrollingComponent>().UpdateScrollingPosition(delta);
+                }
             }
         });
+    }
+
+    public void ClearEntities()
+    {
+        ForEachSpawnedEntity(entity => RemoveEntity(entity));
     }
 
     private void ConnectCustomSignals(Entity entity)
@@ -35,6 +48,7 @@ public partial class EntityManager : Node
         entity.OnRemove += (Entity entity) => RemoveEntity(entity);
 
         if (entity.HasComponent<CollectibleComponent>()) HandleEntityCollectedSignal(entity);
+        if (entity.HasComponent<ObstacleComponent>()) HandleObstacleCollisionSignal(entity);
     }
 
     private void HandleEntityCollectedSignal(Entity entity)
@@ -50,14 +64,19 @@ public partial class EntityManager : Node
         }
     }
 
+    private void HandleObstacleCollisionSignal(Entity entity)
+    {
+        entity.GetComponent<ObstacleComponent>().OnObstacleCollision += (int collisionDamage) => ApplyCollisionDamage(collisionDamage);
+    }
+
     private void AddCollectedCoin(Coin coin)
     {
         GetParent<Main>().AddCollectedCoins(coin.Value);
     }
 
-    public void ClearEntities()
+    private void ApplyCollisionDamage(int collisionDamage)
     {
-        ForEachSpawnedEntity(entity => RemoveEntity(entity));
+        GetParent<Main>().GetNode<Player>("Player").TakeDamage(collisionDamage);
     }
 
     private void RemoveEntity(Entity entity)
